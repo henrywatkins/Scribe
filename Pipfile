@@ -4,11 +4,13 @@ verify_ssl = true
 name = "pypi"
 
 [packages]
-pyinstaller = "*"
 click = "*"
-pytest = "*"
+scribe = {editable = true, path = "."}
 
 [dev-packages]
+pytest = "*"
+pylint = "*"
+black = "*"
 
 [requires]
-python_version = "3.7"
+python_version = "3.8"
