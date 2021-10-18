@@ -6,6 +6,7 @@ name = "pypi"
 [packages]
 click = "*"
 scribe = {editable = true, path = "."}
+pyyaml = "*"
 
 [dev-packages]
 pytest = "*"

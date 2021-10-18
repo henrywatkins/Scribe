@@ -1,3 +1,8 @@
+"""utils.py
+
+Utilities for scribe writing assistant
+"""
+
 MARKDOWN_TEMPLATE = {
     "Title ideas": ["What is a possible title of this work?: "],
     "Narrative": ["How whould you describe the narrative of this work?: "],
@@ -23,7 +28,10 @@ MARKDOWN_TEMPLATE = {
         "What are your results?: ",
         "What do your results mean in context?: ",
     ],
-    "Conclusions": ["What are your conclusions?: ", "How has your work fullfilled what the field needs?: "],
+    "Conclusions": [
+        "What are your conclusions?: ",
+        "How has your work fullfilled what the field needs?: ",
+    ],
     "Abstract": ["Write an abstract for your work: "],
 }
 
@@ -31,12 +39,13 @@ PREAMBLE = """                SCRIBE
     A small tool to help with scientific
     writing projects. Answer the question
     prompts with short notes that act as
-    unit tests. These notes should breifly
+    unit tests. These notes should briefly
     detail the purpose or operation of a
     paragraph or short section. """
 
 
 def multiinput(question):
+    """For a given question, allow the user to answer multiple times"""
     answer = input(question)
     new_lines = [answer]
     while True:
