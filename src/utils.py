@@ -94,8 +94,8 @@ def read_content():
     return file_dictionary
 
 
-def save_content(dictionary):
-    with open(project_dir / "content.yml", "w", encoding="utf-8") as file:
+def save_content(content_dictionary):
+    with open("content.yml", "w", encoding="utf-8") as file:
         yaml.dump(content_dictionary, file)
 
 
