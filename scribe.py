@@ -7,7 +7,7 @@ import os
 
 import click
 import yaml
-from scribe import utils
+from utils import *
 
 
 @click.group()
@@ -19,7 +19,7 @@ def cli():
 @cli.command()
 @click.argument("file_name")
 def create(file_name):
-    """Create a new writing project skeleton file"""
+    """Create a new writing project"""
     assert file_name[-4:] == ".yml"
     if not os.path.isfile(file_name):
         print(utils.PREAMBLE)
@@ -62,3 +62,8 @@ def test(file_name):
                 print("\033[32m" + "PASSED" + "\033[0m")
     test_cases = "".join(test_cases)
     print(f"\nResults of test session: {test_cases}")
+
+
+
+if __name__ == '__main__':
+    cli()
