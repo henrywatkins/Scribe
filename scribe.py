@@ -4,6 +4,8 @@ scribe writing assistant cli script.
 contains cli command inplementations.
 """
 import os
+from pathlib import Path
+from collections import OrderedDict
 
 import click
 import yaml
@@ -17,37 +19,45 @@ def cli():
 
 
 @cli.command()
-@click.argument("file_name")
-def create(file_name):
+@click.argument("name")
+def create(name):
     """Create a new writing project"""
-    assert file_name[-4:] == ".yml"
-    if not os.path.isfile(file_name):
-        print(utils.PREAMBLE)
+    cwd = Path.cwd()
+    project_dir = cwd / name
+    if not project_dir.exists():
+        project_dir.mkdir()
+        (project_dir / "images").mkdir()
+        print(PREAMBLE)
         content_dictionary = {}
-        for section, questions in utils.MARKDOWN_TEMPLATE.items():
-            print(f"\nSection: {section}")
+        for section, data in MARKDOWN_TEMPLATE.items():
+            section_name = data["section_name"]
+            print(f"\nSection: {section_name}")
             print("-------------------------------------------")
             answers = []
-            for question in questions:
-                answer = utils.multiinput(question)
+            for question in data["questions"]:
+                answer = multiinput(question)
                 answers.extend(answer)
-            content_dictionary[section] = answers
-        with open(file_name, "w", encoding="utf-8") as file:
+            content_dictionary[section] = {
+                "section_name": section_name,
+                "replies": answers,
+                "content": [],
+            }
+        with open(project_dir / "content.yml", "w", encoding="utf-8") as file:
             yaml.dump(content_dictionary, file)
+        print(f"Created project {name}")
     else:
-        raise ValueError("File with that name already exists")
+        raise ValueError("Project with that name already exists")
 
 
 @cli.command()
-@click.argument("file_name")
-def test(file_name):
+@click.argument("name")
+def test(name):
     """Run the the writing process tests"""
-    assert file_name[-4:] == ".yml"
     with open(file_name, "r", encoding="utf-8") as file:
         file_dictionary = yaml.load(file, Loader=yaml.FullLoader)
     print("================= test session starts ===================")
     test_cases = []
-    for section in utils.MARKDOWN_TEMPLATE:
+    for section in MARKDOWN_TEMPLATE:
         notes = file_dictionary[section]
         print(f"\nSection: {section}")
         print("-------------------------------------------")
@@ -64,6 +74,70 @@ def test(file_name):
     print(f"\nResults of test session: {test_cases}")
 
 
+@cli.command()
+@click.argument("section")
+def show(section):
+    """Print a section to stdout
 
-if __name__ == '__main__':
+    Avaliable sections:
+
+    - title
+    - narrative
+    - refs
+    - journals
+    - intro
+    - background
+    - methods
+    - results
+    - discussion
+    - abstract
+    """
+    content = read_content()
+    if section == "all":
+        for s in content.values():
+            print(s["section_name"] + "\n")
+            for r in s["replies"]:
+                print(r)
+            for c in s["content"]:
+                print(c)
+    elif section == "paper":
+        for n, s in content.items():
+            if n in paper_sections:
+                print(s["section_name"] + "\n")
+                for c in s["content"]:
+                    print(c)
+    elif section in paper_sections:
+        s = content[section]
+        print(s["section_name"] + "\n")
+        for r in s["replies"]:
+            print(r)
+        for c in s["content"]:
+            print(c)
+    else:
+        raise ValueError("Section not recognised")
+
+
+@cli.command()
+@click.argument("section")
+def expand(section):
+    """Expand each section into full paragraphs
+
+    Available sections:
+
+    - intro
+    - background
+    - methods
+    - results
+    - discussion
+    """
+    content = read_content()
+    avalable_sections = ["intro", "background", "methods", "results", "discussion"]
+    if section in avalable_sections:
+        pass
+
+    else:
+        raise ValueError("Section not recognised")
+
+
+if __name__ == "__main__":
     cli()
