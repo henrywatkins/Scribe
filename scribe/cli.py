@@ -9,7 +9,7 @@ from collections import OrderedDict
 
 import click
 import yaml
-from utils import *
+from .utils import *
 
 
 @click.group()
@@ -95,7 +95,7 @@ def show(section):
     content = read_content()
     if section == "all":
         for s in content.values():
-            print("\n"+s["section_name"] + "\n")
+            print("\n" + s["section_name"] + "\n")
             for r in s["replies"]:
                 print(r)
             for c in s["content"]:
@@ -135,8 +135,12 @@ def expand(section):
     if section in avalable_sections:
         section_content = content[section]
         print(section_content["section_name"])
-        print("Expand your ideas, a paragraph should be long enough to contain an idea.")
-        print("Consider expanding with a topic sentence, a couple of support sentences with facts to support the idea, and end with a conclusion sentence.")
+        print(
+            "Expand your ideas, a paragraph should be long enough to contain an idea."
+        )
+        print(
+            "Consider expanding with a topic sentence, a couple of support sentences with facts to support the idea, and end with a conclusion sentence."
+        )
         paragraphs = []
         for s in section_content["replies"]:
             answer = multiinput(s)

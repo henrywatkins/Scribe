@@ -4,25 +4,22 @@ A helper for writing scientific papers
 
 ## Installation
 
-From within the repository, run
+Install with a wheel 
+
+```
+pip install path/to/wheel
+```
 
 ## Usage
 
 ```
-scribe create project_name.yml
+python -m scribe.cli --help
 ```
 
-Will create a project template YAML file and the command line interface will run through a set of questions to answer about your academic writing project. 
+Other commands are
 
 ```
-scribe test project_name.yml
+python -m scribe.cli create
+python -m scribe.cli expand
+python -m scribe.cli show
 ```
-
-Will run through the answers given to the previous command and ask you to verify if there is enough info in the YAML to start converting it to a paper.
-
-## Features
-
-- to-markdown export feature
-- expand on skeleton feature
-- show sections feature
-- print whole paper to cli
