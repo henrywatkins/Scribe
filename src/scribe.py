@@ -95,17 +95,17 @@ def show(section):
     content = read_content()
     if section == "all":
         for s in content.values():
-            print(s["section_name"] + "\n")
+            print("\n"+s["section_name"] + "\n")
             for r in s["replies"]:
                 print(r)
             for c in s["content"]:
                 print(c)
     elif section == "paper":
-        for n, s in content.items():
-            if n in paper_sections:
-                print(s["section_name"] + "\n")
-                for c in s["content"]:
-                    print(c)
+        for s in paper_sections:
+            paper_section = content[s]
+            print("\n" + paper_section["section_name"] + "\n")
+            for c in paper_section["content"]:
+                print(c)
     elif section in paper_sections:
         s = content[section]
         print(s["section_name"] + "\n")
@@ -133,8 +133,16 @@ def expand(section):
     content = read_content()
     avalable_sections = ["intro", "background", "methods", "results", "discussion"]
     if section in avalable_sections:
-        pass
-
+        section_content = content[section]
+        print(section_content["section_name"])
+        print("Expand your ideas, a paragraph should be long enough to contain an idea.")
+        print("Consider expanding with a topic sentence, a couple of support sentences with facts to support the idea, and end with a conclusion sentence.")
+        paragraphs = []
+        for s in section_content["replies"]:
+            answer = multiinput(s)
+            paragraphs.extend(answer)
+        content[section]["content"].extend(paragraphs)
+        save_content(content)
     else:
         raise ValueError("Section not recognised")
 
