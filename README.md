@@ -24,3 +24,5 @@ Will run through the answers given to the previous command and ask you to verify
 
 - to-markdown export feature
 - expand on skeleton feature
+- show sections feature
+- print whole paper to cli
